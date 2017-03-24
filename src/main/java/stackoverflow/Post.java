@@ -28,6 +28,7 @@ public class Post {
     private int parentId;
 
     public List<Answer> answers;
+    public double searchScore;
 
     public Post(Map<String, String> post) {
         id = Integer.parseInt(post.get(PostField.Id.toString()));
@@ -52,19 +53,16 @@ public class Post {
         }
     }
 
-    public Post(Document doc, List<Answer> answerList) {
+    public Post(Document doc, List<Answer> answerList, double searchscore) {
         id = Integer.parseInt(doc.get(PostField.IdCopy.toString()));
         score = Integer.parseInt(doc.get(PostField.Score.toString()));
         creationDate = doc.get(PostField.CreationDate.toString());
         body = doc.get(PostField.Body.toString());
         code = doc.get(PostField.Code.toString());
         title = doc.get(PostField.Title.toString());
-        if (doc.get(PostField.AnswerCount.toString()) != null) {
-            answerCount = Integer.parseInt(doc.get(PostField.AnswerCount.toString()));
-        }
-        if (doc.get(PostField.ViewCount.toString())!=null){
-            viewCount = Integer.parseInt(doc.get(PostField.ViewCount.toString()));
-        }
+        answerCount = Integer.parseInt(doc.get(PostField.AnswerCount.toString()));
+        viewCount = Integer.parseInt(doc.get(PostField.ViewCount.toString()));
+
         if (doc.get(PostField.AcceptedAnswerId.toString()) != null) {
             acceptedAnswerId = Integer.parseInt(doc.get(PostField.AcceptedAnswerId.toString()));
         } else {
@@ -74,6 +72,7 @@ public class Post {
             tags = doc.get(PostField.Tags.toString());
         }
         answers = answerList;
+        searchScore = searchscore;
     }
 
     public int getId() {

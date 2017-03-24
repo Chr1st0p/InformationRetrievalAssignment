@@ -18,19 +18,16 @@ import org.apache.lucene.store.FSDirectory;
 import stackoverflow.Answer;
 import stackoverflow.Post;
 import stackoverflow.PostField;
+import utils.PostComparator;
 
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class PostSearcher {
 
-    //    public static List<Question> questions;
     private IndexReader postReader;
     private IndexSearcher postSearcher;
 
@@ -41,52 +38,51 @@ public class PostSearcher {
     }
 
     public void search(String queryStr, int hitNum) throws IOException, ParseException {
-
-        List<Post> posts = new ArrayList<Post>();
+        Set<Post> posts = new TreeSet<Post>(new PostComparator());
+//        List<Post> posts = new ArrayList<Post>();
         List<Answer> answers;
 
         Map<String, Analyzer> customizeAnalyzer = new HashMap<>();
         customizeAnalyzer.put("Code", new CodeAnalyzer());
-        PerFieldAnalyzerWrapper wrapper = new PerFieldAnalyzerWrapper(new StandardAnalyzer(), customizeAnalyzer);
+        PerFieldAnalyzerWrapper wrapper = new PerFieldAnalyzerWrapper(new StandardAnalyzer() , customizeAnalyzer);
 
         MultiFieldQueryParser parser = new MultiFieldQueryParser(new String[]
                 {PostField.Body.toString(), PostField.Title.toString(), PostField.Code.toString(), PostField.Tags.toString()}, wrapper);
         Query query = parser.parse(queryStr);
 
         TopDocs hitdocs = postSearcher.search(query, hitNum);
+
         for (ScoreDoc doc : hitdocs.scoreDocs) {
             Document document = postSearcher.doc(doc.doc);
 
             if (document.get(PostField.ParentIdCopy.toString()) == null) {
+
                 int id = Integer.parseInt(document.get(PostField.IdCopy.toString()));
                 answers = findAllAnswer(id);
-                posts.add(new Post(document, answers));
+                posts.add(new Post(document, answers, (double) doc.score));
             } else {
                 int parentId = Integer.parseInt(document.get(PostField.ParentIdCopy.toString()));
-                if (findPost(parentId) != null) {
-                    posts.add(findPost(parentId));
+                if (findPost(parentId, doc.score) != null) {
+                    posts.add(findPost(parentId, (double) doc.score));
                 }
             }
+
         }
+        postReader.close();
+        int i = 0;
         for (Post p : posts) {
-            System.out.print("Question" + posts.indexOf(p) + " ID:" + p.getId());
-            System.out.println();
-            System.out.print("Question" + posts.indexOf(p) + " Title:" + p.getTitle().replace('\n', ' '));
-            System.out.println();
-            System.out.print("Question" + posts.indexOf(p) + " Body:" + p.getBody().replace('\n', ' '));
-            System.out.println();
-            System.out.print("Question" + posts.indexOf(p) + " Code:" + p.getCode().replace('\n', ' '));
-            System.out.println();
-            System.out.print("Question" + posts.indexOf(p) + " Tags:" + p.getTags().replace('\n', ' '));
-            System.out.println();
+            i++;
+            System.out.println("Question" + i + " ID:" + p.getId());
+            System.out.println("Question" + i + " search Score:" + p.searchScore);
+            System.out.println("Question" + i + " Title:" + p.getTitle().replace('\n', ' '));
+            System.out.println("Question" + i + " Body:" + p.getBody().replace('\n', ' '));
+            System.out.println("Question" + i + " Code:" + p.getCode().replace('\n', ' '));
+            System.out.println("Question" + i + " Tags:" + p.getTags().replace('\n', ' '));
             if (p.answers != null) {
                 for (Answer a : p.answers) {
-                    System.out.print("   Answer" + (p.answers.indexOf(a) + 1) + " ID" + a.getId());
-                    System.out.println();
-                    System.out.print("   Answer" + (p.answers.indexOf(a) + 1) + " Body" + a.getBody().replace('\n', ' '));
-                    System.out.println();
-                    System.out.print("   Answer" + (p.answers.indexOf(a) + 1) + " Code" + a.getCode().replace('\n', ' '));
-                    System.out.println();
+                    System.out.println("   Answer" + (p.answers.indexOf(a) + 1) + " ID" + a.getId());
+                    System.out.println("   Answer" + (p.answers.indexOf(a) + 1) + " Body" + a.getBody().replace('\n', ' '));
+                    System.out.println("   Answer" + (p.answers.indexOf(a) + 1) + " Code" + a.getCode().replace('\n', ' '));
                 }
             } else {
                 System.out.println("No Answers.");
@@ -110,7 +106,7 @@ public class PostSearcher {
         }
     }
 
-    private Post findPost(int questionId) throws IOException {
+    private Post findPost(int questionId, double score) throws IOException {
         List<Answer> answers;
         Query query = IntPoint.newExactQuery(PostField.Id.toString(), questionId);
         ScoreDoc[] docs = postSearcher.search(query, 100).scoreDocs;
@@ -119,7 +115,7 @@ public class PostSearcher {
             Document document = postSearcher.doc(docs[0].doc);
             int id = Integer.parseInt(document.get(PostField.IdCopy.toString()));
             answers = findAllAnswer(id);
-            return new Post(document, answers);
+            return new Post(document, answers, score);
         } else {
             return null;
         }
