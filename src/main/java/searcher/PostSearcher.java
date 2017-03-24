@@ -69,15 +69,15 @@ public class PostSearcher {
             }
         }
         for (Post p : posts) {
-            System.out.print("Question ID:" + p.getId());
+            System.out.print("Question" + posts.indexOf(p) + " ID:" + p.getId());
             System.out.println();
-            System.out.print("Question Title:" + p.getTitle().replace('\n', ' '));
+            System.out.print("Question" + posts.indexOf(p) + " Title:" + p.getTitle().replace('\n', ' '));
             System.out.println();
-            System.out.print("Question Body:" + p.getBody().replace('\n', ' '));
+            System.out.print("Question" + posts.indexOf(p) + " Body:" + p.getBody().replace('\n', ' '));
             System.out.println();
-            System.out.print("Question Code:" + p.getCode().replace('\n', ' '));
+            System.out.print("Question" + posts.indexOf(p) + " Code:" + p.getCode().replace('\n', ' '));
             System.out.println();
-            System.out.print("Question Tags" + p.getTags().replace('\n', ' '));
+            System.out.print("Question" + posts.indexOf(p) + " Tags:" + p.getTags().replace('\n', ' '));
             System.out.println();
             if (p.answers != null) {
                 for (Answer a : p.answers) {
@@ -112,7 +112,7 @@ public class PostSearcher {
 
     private Post findPost(int questionId) throws IOException {
         List<Answer> answers;
-        Query query = IntPoint.newExactQuery(PostField.ParentId.toString(), questionId);
+        Query query = IntPoint.newExactQuery(PostField.Id.toString(), questionId);
         ScoreDoc[] docs = postSearcher.search(query, 100).scoreDocs;
 
         if (docs.length == 1) {

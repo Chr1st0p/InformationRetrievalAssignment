@@ -3,13 +3,10 @@ package searcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import stackoverflow.Post;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by str2n on 2017/3/24.
- */
+
 public class PostSearcherTest {
     private PostSearcher searcher;
 
@@ -24,7 +21,7 @@ public class PostSearcherTest {
 
     @Test
     public void search() throws Exception {
-        searcher.search("pandas python", 10);
+        searcher.search("numpy resize array", 20);
     }
 
 }

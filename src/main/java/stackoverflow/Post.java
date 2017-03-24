@@ -59,8 +59,12 @@ public class Post {
         body = doc.get(PostField.Body.toString());
         code = doc.get(PostField.Code.toString());
         title = doc.get(PostField.Title.toString());
-        answerCount = Integer.parseInt(doc.get(PostField.AnswerCount.toString()));
-        viewCount = Integer.parseInt(doc.get(PostField.ViewCount.toString()));
+        if (doc.get(PostField.AnswerCount.toString()) != null) {
+            answerCount = Integer.parseInt(doc.get(PostField.AnswerCount.toString()));
+        }
+        if (doc.get(PostField.ViewCount.toString())!=null){
+            viewCount = Integer.parseInt(doc.get(PostField.ViewCount.toString()));
+        }
         if (doc.get(PostField.AcceptedAnswerId.toString()) != null) {
             acceptedAnswerId = Integer.parseInt(doc.get(PostField.AcceptedAnswerId.toString()));
         } else {
