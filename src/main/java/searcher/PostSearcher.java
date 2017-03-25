@@ -10,6 +10,7 @@ import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
@@ -38,21 +39,28 @@ public class PostSearcher {
     }
 
     public void search(String queryStr, int hitNum) throws IOException, ParseException {
-        Set<Post> posts = new TreeSet<Post>(new PostComparator());
-//        List<Post> posts = new ArrayList<Post>();
-        List<Answer> answers;
 
+        Set<Post> posts = new TreeSet<>(new PostComparator());
+        List<Answer> answers;
+        //  Analyzer customization
         Map<String, Analyzer> customizeAnalyzer = new HashMap<>();
         customizeAnalyzer.put("Code", new CodeAnalyzer());
-        PerFieldAnalyzerWrapper wrapper = new PerFieldAnalyzerWrapper(new StandardAnalyzer() , customizeAnalyzer);
-
+        PerFieldAnalyzerWrapper wrapper = new PerFieldAnalyzerWrapper(new StandardAnalyzer(), customizeAnalyzer);
+        //  Weight customization
+        Map<String, Float> boosts = new HashMap<>();
+        boosts.put(PostField.Body.toString(), 1.0f);
+        boosts.put(PostField.Title.toString(), 1.0f);
+        boosts.put(PostField.Code.toString(), 1.0f);
+        boosts.put(PostField.Tags.toString(), 1.0f);
+        //  Add customized analyzer and weight to QueryParser
         MultiFieldQueryParser parser = new MultiFieldQueryParser(new String[]
-                {PostField.Body.toString(), PostField.Title.toString(), PostField.Code.toString(), PostField.Tags.toString()}, wrapper);
+                {PostField.Body.toString(), PostField.Title.toString(), PostField.Code.toString(), PostField.Tags.toString()}, wrapper, boosts);
+        parser.setDefaultOperator(QueryParser.Operator.AND);
         Query query = parser.parse(queryStr);
 
-        TopDocs hitdocs = postSearcher.search(query, hitNum);
+        TopDocs hitDocs = postSearcher.search(query, hitNum);
 
-        for (ScoreDoc doc : hitdocs.scoreDocs) {
+        for (ScoreDoc doc : hitDocs.scoreDocs) {
             Document document = postSearcher.doc(doc.doc);
 
             if (document.get(PostField.ParentIdCopy.toString()) == null) {
@@ -66,29 +74,34 @@ public class PostSearcher {
                     posts.add(findPost(parentId, (double) doc.score));
                 }
             }
-
         }
         postReader.close();
+
         int i = 0;
-        for (Post p : posts) {
-            i++;
-            System.out.println("Question" + i + " ID:" + p.getId());
-            System.out.println("Question" + i + " search Score:" + p.searchScore);
-            System.out.println("Question" + i + " Title:" + p.getTitle().replace('\n', ' '));
-            System.out.println("Question" + i + " Body:" + p.getBody().replace('\n', ' '));
-            System.out.println("Question" + i + " Code:" + p.getCode().replace('\n', ' '));
-            System.out.println("Question" + i + " Tags:" + p.getTags().replace('\n', ' '));
-            if (p.answers != null) {
-                for (Answer a : p.answers) {
-                    System.out.println("   Answer" + (p.answers.indexOf(a) + 1) + " ID" + a.getId());
-                    System.out.println("   Answer" + (p.answers.indexOf(a) + 1) + " Body" + a.getBody().replace('\n', ' '));
-                    System.out.println("   Answer" + (p.answers.indexOf(a) + 1) + " Code" + a.getCode().replace('\n', ' '));
+        if (posts.size() != 0) {
+            for (Post p : posts) {
+                i++;
+                System.out.println("Question" + i + " ID:" + p.getId());
+                System.out.println("Question" + i + " search Score:" + p.searchScore);
+                System.out.println("Question" + i + " Title:" + p.getTitle().replace('\n', ' '));
+                System.out.println("Question" + i + " Body:" + p.getBody().replace('\n', ' '));
+                System.out.println("Question" + i + " Code:" + p.getCode().replace('\n', ' '));
+                System.out.println("Question" + i + " Tags:" + p.getTags().replace('\n', ' '));
+                if (p.answers != null) {
+                    for (Answer a : p.answers) {
+                        System.out.println("   Answer" + (p.answers.indexOf(a) + 1) + " ID:" + a.getId());
+                        System.out.println("   Answer" + (p.answers.indexOf(a) + 1) + " Body:" + a.getBody().replace('\n', ' '));
+                        System.out.println("   Answer" + (p.answers.indexOf(a) + 1) + " Code:" + a.getCode().replace('\n', ' '));
+                    }
+                } else {
+                    System.out.println("No Answers.");
                 }
-            } else {
-                System.out.println("No Answers.");
             }
+        } else {
+            System.out.println("No Posts matching.");
         }
     }
+
 
     private List<Answer> findAllAnswer(int parentId) throws IOException {
         List<Answer> answers = new ArrayList<>();

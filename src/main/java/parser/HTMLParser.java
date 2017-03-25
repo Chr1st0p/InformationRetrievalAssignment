@@ -1,10 +1,8 @@
 package parser;
 
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
