@@ -5,16 +5,16 @@ import org.apache.lucene.document.Document;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by str2n on 2017/3/24.
- */
+
 public class Post {
 
+    //  common field
     private int id;
     private String creationDate;
     private String body;
     private String code;
     private int score;
+
     //  Only Question
     private String title;
     private int answerCount;
@@ -27,8 +27,11 @@ public class Post {
     //  Only answer
     private int parentId;
 
+    //  For searching
     public List<Answer> answers;
+    public double searchScore;
 
+    //  Index Post constructor
     public Post(Map<String, String> post) {
         id = Integer.parseInt(post.get(PostField.Id.toString()));
         score = Integer.parseInt(post.get(PostField.Score.toString()));
@@ -41,18 +44,21 @@ public class Post {
             title = post.get(PostField.Title.toString());
             answerCount = Integer.parseInt(post.get(PostField.AnswerCount.toString()));
             viewCount = Integer.parseInt(post.get(PostField.ViewCount.toString()));
+
             if (post.get(PostField.AcceptedAnswerId.toString()) != null) {
                 acceptedAnswerId = Integer.parseInt(post.get(PostField.AcceptedAnswerId.toString()));
             } else {
                 acceptedAnswerId = 0;
             }
+
             if (post.get(PostField.Tags.toString()) != null) {
                 tags = post.get(PostField.Tags.toString());
             }
         }
     }
 
-    public Post(Document doc, List<Answer> answerList) {
+    //  Search Post Constructor
+    public Post(Document doc, List<Answer> answerList, double searchscore) {
         id = Integer.parseInt(doc.get(PostField.IdCopy.toString()));
         score = Integer.parseInt(doc.get(PostField.Score.toString()));
         creationDate = doc.get(PostField.CreationDate.toString());
@@ -61,6 +67,7 @@ public class Post {
         title = doc.get(PostField.Title.toString());
         answerCount = Integer.parseInt(doc.get(PostField.AnswerCount.toString()));
         viewCount = Integer.parseInt(doc.get(PostField.ViewCount.toString()));
+
         if (doc.get(PostField.AcceptedAnswerId.toString()) != null) {
             acceptedAnswerId = Integer.parseInt(doc.get(PostField.AcceptedAnswerId.toString()));
         } else {
@@ -69,7 +76,9 @@ public class Post {
         if (doc.get(PostField.Tags.toString()) != null) {
             tags = doc.get(PostField.Tags.toString());
         }
+
         answers = answerList;
+        searchScore = searchscore;
     }
 
     public int getId() {

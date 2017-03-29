@@ -1,15 +1,9 @@
 package stackoverflow;
 
-import javafx.geometry.Pos;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.search.IndexSearcher;
 
-import java.util.Map;
-
-/**
- * Created by str2n on 2017/2/26.
- */
 public class Answer {
+
     private int id;
     private int parentId;
     private String creationDate;
@@ -45,6 +39,7 @@ public class Answer {
     public String getBody() {
         return body;
     }
+
     public String getCode() {
         return code;
     }

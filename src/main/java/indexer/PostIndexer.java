@@ -2,6 +2,7 @@ package indexer;
 
 import analyzer.CodeAnalyzer;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.core.SimpleAnalyzer;
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.*;
@@ -76,7 +77,7 @@ public class PostIndexer {
                 doc.add(new StoredField(PostField.AcceptedAnswerId.toString(), p.getAcceptedAnswerId()));
             }
             if (p.getTags() != null) {
-                doc.add(new TextField(PostField.Tags.toString(), p.getTags(), YES));
+                doc.add(new TextField(PostField.Tags.toString(), HTMLParser.ParseTag(p.getTags()), YES));
             }
         }
         return doc;

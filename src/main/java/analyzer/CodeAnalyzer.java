@@ -10,7 +10,7 @@ import java.util.List;
  * A customized analyzer for Python source code
  */
 public class CodeAnalyzer extends Analyzer {
-    private final List<String> pythonstopWords = Arrays.asList(
+    private final List<String> pythonStopWords = Arrays.asList(
             "False", "None", "True", "and", "as", "assert", "break",
             "class", "continue", "def", "del", "elif", "else", "except",
             "finally", "for", "from", "global", "if", "import", "in", "is",
@@ -25,6 +25,6 @@ public class CodeAnalyzer extends Analyzer {
     @Override
     protected TokenStreamComponents createComponents(String fieldName) {
         Tokenizer tokenizer = new LowerCaseTokenizer();
-        return new TokenStreamComponents(tokenizer, new StopFilter(tokenizer, new CharArraySet(pythonstopWords, false)));
+        return new TokenStreamComponents(tokenizer, new StopFilter(tokenizer, new CharArraySet(pythonStopWords, false)));
     }
 }
