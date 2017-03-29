@@ -8,6 +8,7 @@ import static org.junit.Assert.*;
 
 
 public class PostSearcherTest {
+
     private PostSearcher searcher;
 
     @Before
@@ -21,8 +22,8 @@ public class PostSearcherTest {
 
     @Test
     public void search() throws Exception {
-        searcher.search("\"python numpy\"", 20);
-//        searcher.search("python numpy", 20);
+//        searcher.search("\"python numpy\"", 20);
+        searcher.search("python numpy", 50);
     }
 
 }
