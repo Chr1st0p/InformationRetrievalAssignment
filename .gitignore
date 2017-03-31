@@ -94,3 +94,5 @@ fabric.properties
 !/exampleappindex/02
 /exampleappindex/02/*
 !/exampleappindex/02/.gitignore
+
+!/lib/*
