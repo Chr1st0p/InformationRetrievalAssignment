@@ -1,7 +1,6 @@
 package stackoverflow;
 
 import org.apache.lucene.document.Document;
-import org.jetbrains.annotations.NotNull;
 
 
 public class Answer implements Comparable {
@@ -51,7 +50,7 @@ public class Answer implements Comparable {
     }
 
     @Override
-    public int compareTo(@NotNull Object o) {
+    public int compareTo(Object o) {
 
         Answer ans = (Answer) o;
 
