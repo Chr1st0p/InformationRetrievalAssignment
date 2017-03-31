@@ -23,7 +23,7 @@ public class QuestionFilterTest {
 
     @Test
     public void filterQuesByTag() throws Exception {
-        QuestionFilter.FilterQuesByTag("Posts.xml");
+        QuestionFilter.FilterQuesByTag();
     }
 
 }

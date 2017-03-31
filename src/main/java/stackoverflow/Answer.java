@@ -1,8 +1,10 @@
 package stackoverflow;
 
 import org.apache.lucene.document.Document;
+import org.jetbrains.annotations.NotNull;
 
-public class Answer {
+
+public class Answer implements Comparable {
 
     private int id;
     private int parentId;
@@ -48,4 +50,14 @@ public class Answer {
         this.code = code;
     }
 
+    @Override
+    public int compareTo(@NotNull Object o) {
+
+        Answer ans = (Answer) o;
+
+        Integer obj1 = this.getScore();
+        Integer obj2 = ans.getScore();
+
+        return obj2.compareTo(obj1);
+    }
 }

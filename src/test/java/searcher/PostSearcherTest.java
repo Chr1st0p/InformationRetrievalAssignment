@@ -22,8 +22,8 @@ public class PostSearcherTest {
 
     @Test
     public void search() throws Exception {
-//        searcher.search("\"python numpy\"", 20);
-        searcher.search("python numpy", 50);
+        searcher.search("\"python numpy\"", "0", "", 20);
+//        searcher.search("python numpy append array  axis", "0", 100);
     }
 
 }

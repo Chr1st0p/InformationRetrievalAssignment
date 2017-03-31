@@ -12,17 +12,17 @@ import java.util.Scanner;
 
 public class AnswerFilter {
 
-    public static void FilterAnswerByQIdIndex(String fileName, String type) throws FileNotFoundException {
+    public static void FilterAnswerByQIdIndex() throws FileNotFoundException {
         System.out.println("Start Read File:");
 
-        Scanner in = new Scanner(new File(Paths.POSTSPATH + fileName));
+        Scanner in = new Scanner(new File(Paths.POSTSPATH + "Posts.xml"));
 
         int lineCount = 0;
         String singleLine;
 
         FileWriter writer = null;
         try {
-            File ansFile = new File(Paths.DECOMPFILESTOREPATH + type + "answer.xml");
+            File ansFile = new File(Paths.FILTEREDFILEPATH + "pythonanswer.xml");
 
             writer = new FileWriter(ansFile, true);
 
@@ -30,6 +30,7 @@ public class AnswerFilter {
             e.printStackTrace();
         }
 
+        assert writer != null : "Print Writer is NULL";
         PrintWriter pWriter = new PrintWriter(writer);
 
         QIDSearcher searcher = new QIDSearcher();

@@ -15,6 +15,9 @@ public class Post {
     private String code;
     private int score;
 
+    //example App field
+    private int ownerUserId;
+
     //  Only Question
     private String title;
     private int answerCount;
@@ -37,6 +40,11 @@ public class Post {
         score = Integer.parseInt(post.get(PostField.Score.toString()));
         creationDate = post.get(PostField.CreationDate.toString());
         body = post.get(PostField.Body.toString());
+        if (post.get(PostField.OwnerUserId.toString()) != null) {
+            ownerUserId = Integer.parseInt(post.get(PostField.OwnerUserId.toString()));
+        } else {
+            ownerUserId = 0;
+        }
         if (post.get(PostField.ParentId.toString()) != null) {
             parentId = Integer.parseInt(post.get(PostField.ParentId.toString()));
         } else {
@@ -79,6 +87,14 @@ public class Post {
 
         answers = answerList;
         searchScore = searchscore;
+    }
+
+    public int getOwnerUserId() {
+        return ownerUserId;
+    }
+
+    public void setOwnerUserId(int ownerUserId) {
+        this.ownerUserId = ownerUserId;
     }
 
     public int getId() {

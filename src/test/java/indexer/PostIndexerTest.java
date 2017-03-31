@@ -11,6 +11,7 @@ import static org.junit.Assert.*;
  */
 public class PostIndexerTest {
     private PostIndexer indexer;
+
     @Before
     public void setUp() throws Exception {
         indexer = new PostIndexer();
