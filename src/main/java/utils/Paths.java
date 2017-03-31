@@ -5,7 +5,7 @@ package utils;
  */
 public class Paths {
 
-    public static final String POSTSPATH = "P:\\IDEA\\InformationRetrieval\\stackoverflow.com-Posts\\";
+    public static final String POSTSPATH = System.getProperty("user.dir") + "\\postsXML\\";
 
     public static final String FILTEREDFILEPATH = System.getProperty("user.dir") + "\\filteredXML\\";
 
