@@ -49,9 +49,9 @@ public class PostSearcher {
         //  Weight customization
         Map<String, Float> boosts = new HashMap<>();
         boosts.put(PostField.Body.toString(), 1.0f);
-        boosts.put(PostField.Title.toString(), 1.0f);
-        boosts.put(PostField.Code.toString(), 1.0f);
-        boosts.put(PostField.Tags.toString(), 1.0f);
+        boosts.put(PostField.Title.toString(), 3.0f);
+        boosts.put(PostField.Code.toString(), 2.0f);
+        boosts.put(PostField.Tags.toString(), 3.0f);
         //  Add customized analyzer and weight to QueryParser
 
         List<String> list = new ArrayList<>();
