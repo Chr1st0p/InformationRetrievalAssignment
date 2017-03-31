@@ -53,13 +53,10 @@ public class PostSearcher {
         boosts.put(PostField.Code.toString(), 1.0f);
         boosts.put(PostField.Tags.toString(), 1.0f);
         //  Add customized analyzer and weight to QueryParser
-        MultiFieldQueryParser parser = null;
+
         List<String> list = new ArrayList<>();
         if (select.equals("0")) {
-            list.add(PostField.Body.toString());
-            list.add(PostField.Title.toString());
-            list.add(PostField.Code.toString());
-            list.add(PostField.Tags.toString());
+            list = Arrays.asList(PostField.Body.toString(), PostField.Title.toString(), PostField.Code.toString(), PostField.Tags.toString());
         } else {
             if (fields.contains("1")) {
                 list.add(PostField.Body.toString());
@@ -80,8 +77,7 @@ public class PostSearcher {
         }
 
         String[] queryFields = list.toArray(new String[list.size()]);
-
-        parser = new MultiFieldQueryParser(queryFields, wrapper, boosts);
+        MultiFieldQueryParser parser = new MultiFieldQueryParser(queryFields, wrapper, boosts);
         parser.setDefaultOperator(QueryParser.Operator.AND);
         Query query = parser.parse(queryStr);
 
@@ -117,7 +113,7 @@ public class PostSearcher {
                 if (p.answers != null) {
                     for (Answer a : p.answers) {
                         System.out.println("   Answer" + (p.answers.indexOf(a) + 1) + " ID:" + a.getId());
-                        System.out.println("   Answer" + (p.answers.indexOf(a) + 1) + " Score:" + a.getScore());
+//                        System.out.println("   Answer" + (p.answers.indexOf(a) + 1) + " Score:" + a.getScore());
                         System.out.println("   Answer" + (p.answers.indexOf(a) + 1) + " Body:" + a.getBody().replace('\n', ' '));
                         System.out.println("   Answer" + (p.answers.indexOf(a) + 1) + " Code:" + a.getCode().replace('\n', ' '));
                     }
