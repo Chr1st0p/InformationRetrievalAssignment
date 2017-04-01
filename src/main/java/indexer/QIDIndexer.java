@@ -21,7 +21,7 @@ import java.util.Scanner;
 
 /**
  * To index Question ID in order to filter corresponding answers
- * Created by str2n on 2017/2/25.
+ * Created by Fang Mingmin on 2017/2/25.
  */
 public class QIDIndexer {
 
@@ -52,11 +52,11 @@ public class QIDIndexer {
         return doc;
     }
 
-    public void IndexQueID(String fileName) throws FileNotFoundException {
+    public void IndexQueID() throws FileNotFoundException {
 
         System.out.println("Start question Id indexing");
 
-        Scanner in = new Scanner(new File(utils.Paths.DECOMPFILESTOREPATH + fileName));
+        Scanner in = new Scanner(new File(utils.Paths.FILTEREDFILEPATH + "python.xml"));
 
         String line;
         int lineCount = 0;

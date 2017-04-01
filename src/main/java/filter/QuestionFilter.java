@@ -32,7 +32,7 @@ public class QuestionFilter {
         int javascriptCount = 0;
         int htmlCount = 0;
 
-        while (lineCount<=10) {
+        while (lineCount <= 10) {
             try {
                 singleLine = in.nextLine().trim();
 
@@ -73,7 +73,7 @@ public class QuestionFilter {
 
         FileWriter fw = null;
         try {
-            File f = new File(System.getProperty("user.dir")+"count.txt");
+            File f = new File(System.getProperty("user.dir") + "count.txt");
             fw = new FileWriter(f, true);
         } catch (IOException e) {
             e.printStackTrace();
@@ -98,10 +98,10 @@ public class QuestionFilter {
         }
     }
 
-    public static void FilterQuesByTag(String filename) throws FileNotFoundException {
-        System.out.println("Start Read File:");
+    public static void FilterQuesByTag() throws FileNotFoundException {
+        System.out.println("Start Read Posts.xml");
 
-        Scanner in = new Scanner(new File(Paths.POSTSPATH + filename));
+        Scanner in = new Scanner(new File(Paths.POSTSPATH + "Posts.xml"));
 
         int lineCount = 0;
         String singleLine;
@@ -113,37 +113,37 @@ public class QuestionFilter {
         FileWriter JavascriptWriter = null;
         FileWriter HtmlWriter = null;
         try {
-            File CSharpFile = new File(Paths.DECOMPFILESTOREPATH + "c#.xml");
-            File JavaFile = new File(Paths.DECOMPFILESTOREPATH + "java.xml");
-            File CPlusPlusFile = new File(Paths.DECOMPFILESTOREPATH + "c++.xml");
-            File PythonFile = new File(Paths.DECOMPFILESTOREPATH + "python.xml");
-            File JavascriptFile = new File(Paths.DECOMPFILESTOREPATH + "javascript.xml");
-            File HtmlFile = new File(Paths.DECOMPFILESTOREPATH + "html.xml");
+//            File CSharpFile = new File(Paths.FILTEREDFILEPATH + "c#.xml");
+//            File JavaFile = new File(Paths.FILTEREDFILEPATH + "java.xml");
+//            File CPlusPlusFile = new File(Paths.FILTEREDFILEPATH + "c++.xml");
+            File PythonFile = new File(Paths.FILTEREDFILEPATH + "python.xml");
+//            File JavascriptFile = new File(Paths.FILTEREDFILEPATH + "javascript.xml");
+//            File HtmlFile = new File(Paths.FILTEREDFILEPATH + "html.xml");
 
-            CSharpWriter = new FileWriter(CSharpFile, true);
-            JavaWriter = new FileWriter(JavaFile, true);
-            CPlusPlusWriter = new FileWriter(CPlusPlusFile, true);
+//            CSharpWriter = new FileWriter(CSharpFile, true);
+//            JavaWriter = new FileWriter(JavaFile, true);
+//            CPlusPlusWriter = new FileWriter(CPlusPlusFile, true);
             PythonWriter = new FileWriter(PythonFile, true);
-            JavascriptWriter = new FileWriter(JavascriptFile, true);
-            HtmlWriter = new FileWriter(HtmlFile, true);
+//            JavascriptWriter = new FileWriter(JavascriptFile, true);
+//            HtmlWriter = new FileWriter(HtmlFile, true);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        assert CSharpWriter != null : "C# Print writer is null";
-        assert JavaWriter != null : "Java Print writer is null";
-        assert CPlusPlusWriter != null : "C++ Print writer is null";
+//        assert CSharpWriter != null : "C# Print writer is null";
+//        assert JavaWriter != null : "Java Print writer is null";
+//        assert CPlusPlusWriter != null : "C++ Print writer is null";
         assert PythonWriter != null : "Python Print writer is null";
-        assert JavascriptWriter != null : "Javascript Print writer is null";
-        assert HtmlWriter != null : "HTML Print writer is null";
+//        assert JavascriptWriter != null : "Javascript Print writer is null";
+//        assert HtmlWriter != null : "HTML Print writer is null";
 
-        PrintWriter CSpw = new PrintWriter(CSharpWriter);
-        PrintWriter Javapw = new PrintWriter(JavaWriter);
-        PrintWriter CPpw = new PrintWriter(CPlusPlusWriter);
+//        PrintWriter CSpw = new PrintWriter(CSharpWriter);
+//        PrintWriter Javapw = new PrintWriter(JavaWriter);
+//        PrintWriter CPpw = new PrintWriter(CPlusPlusWriter);
         PrintWriter Pythonpw = new PrintWriter(PythonWriter);
-        PrintWriter JSpw = new PrintWriter(JavascriptWriter);
-        PrintWriter Htmlpw = new PrintWriter(HtmlWriter);
+//        PrintWriter JSpw = new PrintWriter(JavascriptWriter);
+//        PrintWriter Htmlpw = new PrintWriter(HtmlWriter);
 
         while (in.hasNextLine()) {
             try {
@@ -159,18 +159,18 @@ public class QuestionFilter {
                     } catch (Exception e) {
 //                        System.out.println("No Tags");
                     }
-                    if (tag.contains("c#"))
-                        CSpw.println(singleLine);
-                    if (tag.contains("java") && !tag.contains("javascript"))
-                        Javapw.println(singleLine);
-                    if (tag.contains("c++"))
-                        CPpw.println(singleLine);
+//                    if (tag.contains("c#"))
+//                        CSpw.println(singleLine);
+//                    if (tag.contains("java") && !tag.contains("javascript"))
+//                        Javapw.println(singleLine);
+//                    if (tag.contains("c++"))
+//                        CPpw.println(singleLine);
                     if (tag.contains("python"))
                         Pythonpw.println(singleLine);
-                    if (tag.contains("javascript"))
-                        JSpw.println(singleLine);
-                    if (tag.contains("html"))
-                        Htmlpw.println(singleLine);
+//                    if (tag.contains("javascript"))
+//                        JSpw.println(singleLine);
+//                    if (tag.contains("html"))
+//                        Htmlpw.println(singleLine);
                 }
                 lineCount++;
             } catch (Exception e) {
@@ -179,34 +179,34 @@ public class QuestionFilter {
         }
         in.close();
 
-        CSpw.flush();
-        Javapw.flush();
-        CPpw.flush();
+//        CSpw.flush();
+//        Javapw.flush();
+//        CPpw.flush();
         Pythonpw.flush();
-        JSpw.flush();
-        Htmlpw.flush();
+//        JSpw.flush();
+//        Htmlpw.flush();
 
         try {
-            CSharpWriter.flush();
-            JavaWriter.flush();
-            CPlusPlusWriter.flush();
+//            CSharpWriter.flush();
+//            JavaWriter.flush();
+//            CPlusPlusWriter.flush();
             PythonWriter.flush();
-            JavascriptWriter.flush();
-            HtmlWriter.flush();
-
-            CSharpWriter.close();
-            JavaWriter.close();
-            CPlusPlusWriter.close();
+//            JavascriptWriter.flush();
+//            HtmlWriter.flush();
+//
+//            CSharpWriter.close();
+//            JavaWriter.close();
+//            CPlusPlusWriter.close();
             PythonWriter.close();
-            JavascriptWriter.close();
-            HtmlWriter.close();
-
-            CSpw.close();
-            Javapw.close();
-            CPpw.close();
+//            JavascriptWriter.close();
+//            HtmlWriter.close();
+//
+//            CSpw.close();
+//            Javapw.close();
+//            CPpw.close();
             Pythonpw.close();
-            JSpw.close();
-            Htmlpw.close();
+//            JSpw.close();
+//            Htmlpw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

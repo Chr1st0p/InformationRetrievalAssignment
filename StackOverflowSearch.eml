@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component LANGUAGE_LEVEL="JDK_1_8" inheritJdk="true">
+	<output-test url="file://$MODULE_DIR$/target/test-classes"/>
+	<contentEntry url="file://$MODULE_DIR$">
+		<testFolder url="file://$MODULE_DIR$/src/test/java"/>
+		<excludeFolder url="file://$MODULE_DIR$/target"/>
+	</contentEntry>
+	<lib name="dom4j-1.6.1.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/dom4j-1.6.1.jar!/"/>
+	</lib>
+	<lib name="jsoup-1.10.2.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/jsoup-1.10.2.jar!/"/>
+	</lib>
+	<lib name="lucene-analyzers-common-6.4.1.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/lucene-analyzers-common-6.4.1.jar!/"/>
+	</lib>
+	<lib name="lucene-core-6.4.1.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/lucene-core-6.4.1.jar!/"/>
+	</lib>
+	<lib name="lucene-queryparser-6.4.1.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/lucene-queryparser-6.4.1.jar!/"/>
+	</lib>
+	<levels>
+		<level name="Maven: junit:junit:4.11" value="project"/>
+		<level name="Maven: org.hamcrest:hamcrest-core:1.3" value="project"/>
+		<level name="Maven: dom4j:dom4j:1.6.1" value="project"/>
+		<level name="Maven: xml-apis:xml-apis:1.0.b2" value="project"/>
+		<level name="Maven: org.apache.lucene:lucene-core:6.4.1" value="project"/>
+		<level name="Maven: org.apache.lucene:lucene-queryparser:6.4.1" value="project"/>
+		<level name="Maven: org.apache.lucene:lucene-queries:6.4.1" value="project"/>
+		<level name="Maven: org.apache.lucene:lucene-sandbox:6.4.1" value="project"/>
+		<level name="Maven: org.apache.lucene:lucene-analyzers-common:6.4.1" value="project"/>
+		<level name="Maven: org.jsoup:jsoup:1.10.2" value="project"/>
+	</levels>
+</component>

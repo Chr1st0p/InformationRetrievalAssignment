@@ -38,7 +38,7 @@ public class PostSearcher {
 
     }
 
-    public void search(String queryStr, int hitNum) throws IOException, ParseException {
+    public void search(String queryStr, String select, String fields, int hitNum) throws IOException, ParseException {
 
         Set<Post> posts = new TreeSet<>(new PostComparator());
         List<Answer> answers;
@@ -49,12 +49,35 @@ public class PostSearcher {
         //  Weight customization
         Map<String, Float> boosts = new HashMap<>();
         boosts.put(PostField.Body.toString(), 1.0f);
-        boosts.put(PostField.Title.toString(), 1.0f);
-        boosts.put(PostField.Code.toString(), 1.0f);
-        boosts.put(PostField.Tags.toString(), 1.0f);
+        boosts.put(PostField.Title.toString(), 3.0f);
+        boosts.put(PostField.Code.toString(), 2.0f);
+        boosts.put(PostField.Tags.toString(), 3.0f);
         //  Add customized analyzer and weight to QueryParser
-        MultiFieldQueryParser parser = new MultiFieldQueryParser(new String[]
-                {PostField.Body.toString(), PostField.Title.toString(), PostField.Code.toString(), PostField.Tags.toString()}, wrapper, boosts);
+
+        List<String> list = new ArrayList<>();
+        if (select.equals("0")) {
+            list = Arrays.asList(PostField.Body.toString(), PostField.Title.toString(), PostField.Code.toString(), PostField.Tags.toString());
+        } else {
+            if (fields.contains("1")) {
+                list.add(PostField.Body.toString());
+            }
+            if (fields.contains("2")) {
+                list.add(PostField.Title.toString());
+            }
+            if (fields.contains("3")) {
+                list.add(PostField.Code.toString());
+            }
+            if (fields.contains("4")) {
+                list.add(PostField.Tags.toString());
+            }
+        }
+        if (list.size() == 0) {
+            System.out.println("Wrong fields configuration. Please run again.");
+            return;
+        }
+
+        String[] queryFields = list.toArray(new String[list.size()]);
+        MultiFieldQueryParser parser = new MultiFieldQueryParser(queryFields, wrapper, boosts);
         parser.setDefaultOperator(QueryParser.Operator.AND);
         Query query = parser.parse(queryStr);
 
@@ -90,6 +113,7 @@ public class PostSearcher {
                 if (p.answers != null) {
                     for (Answer a : p.answers) {
                         System.out.println("   Answer" + (p.answers.indexOf(a) + 1) + " ID:" + a.getId());
+//                        System.out.println("   Answer" + (p.answers.indexOf(a) + 1) + " Score:" + a.getScore());
                         System.out.println("   Answer" + (p.answers.indexOf(a) + 1) + " Body:" + a.getBody().replace('\n', ' '));
                         System.out.println("   Answer" + (p.answers.indexOf(a) + 1) + " Code:" + a.getCode().replace('\n', ' '));
                     }
@@ -113,6 +137,7 @@ public class PostSearcher {
                 Document document = postSearcher.doc(doc.doc);
                 answers.add(new Answer(document));
             }
+            Collections.sort(answers);
             return answers;
         } else {
             return null;
@@ -123,7 +148,6 @@ public class PostSearcher {
         List<Answer> answers;
         Query query = IntPoint.newExactQuery(PostField.Id.toString(), questionId);
         ScoreDoc[] docs = postSearcher.search(query, 100).scoreDocs;
-
         if (docs.length == 1) {
             Document document = postSearcher.doc(docs[0].doc);
             int id = Integer.parseInt(document.get(PostField.IdCopy.toString()));

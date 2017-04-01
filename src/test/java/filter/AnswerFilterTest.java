@@ -22,8 +22,8 @@ public class AnswerFilterTest {
     @Test
     public void filterAnswerByQIdIndex() throws Exception {
         QIDIndexer indexer = new QIDIndexer();
-        indexer.IndexQueID("python.xml");
-        AnswerFilter.FilterAnswerByQIdIndex("Posts.xml", "python");
+        indexer.IndexQueID();
+        AnswerFilter.FilterAnswerByQIdIndex();
     }
 
 }

@@ -2,7 +2,6 @@ package indexer;
 
 import analyzer.CodeAnalyzer;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.core.SimpleAnalyzer;
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.*;
@@ -86,7 +85,7 @@ public class PostIndexer {
     public void IndexPost() throws FileNotFoundException {
         System.out.println("Start Question Indexing:");
 
-        Scanner questionIn = new Scanner(new File(utils.Paths.DECOMPFILESTOREPATH + "python.xml"));
+        Scanner questionIn = new Scanner(new File(utils.Paths.FILTEREDFILEPATH + "python.xml"));
 
         String line;
 
@@ -100,7 +99,7 @@ public class PostIndexer {
             } catch (DocumentException e) {
                 System.out.println("Parse data from xml wrong. Question Document can't be added at line:" + lineCount);
             } catch (IOException e) {
-                System.out.println("Writer add Question documents wrong." + utils.Paths.DECOMPFILESTOREPATH + "python.xml" + " at line " + lineCount);
+                System.out.println("Writer add Question documents wrong." + utils.Paths.FILTEREDFILEPATH + "python.xml" + " at line " + lineCount);
             }
         }
         questionIn.close();
@@ -108,7 +107,7 @@ public class PostIndexer {
 
         System.out.println("Start Answer Indexing:");
 
-        Scanner answerIn = new Scanner(new File(utils.Paths.DECOMPFILESTOREPATH + "pythonanswer.xml"));
+        Scanner answerIn = new Scanner(new File(utils.Paths.FILTEREDFILEPATH + "pythonanswer.xml"));
 
         lineCount = 0;
         while (answerIn.hasNextLine()) {
@@ -120,7 +119,7 @@ public class PostIndexer {
             } catch (DocumentException e) {
                 System.out.println("Parse data from xml wrong. Answer Document can't be added at line:" + lineCount);
             } catch (IOException e) {
-                System.out.println("Writer add Answer documents wrong." + utils.Paths.DECOMPFILESTOREPATH + "pythonanswer.xml" + " at line " + lineCount);
+                System.out.println("Writer add Answer documents wrong." + utils.Paths.FILTEREDFILEPATH + "pythonanswer.xml" + " at line " + lineCount);
             }
         }
         answerIn.close();
@@ -128,7 +127,7 @@ public class PostIndexer {
         try {
             writer.close();
         } catch (IOException e) {
-            System.out.println("Question IndexWriter be closed with errors!");
+            System.out.println("Answer IndexWriter be closed with errors!");
         }
         System.out.println("Index end.");
     }
